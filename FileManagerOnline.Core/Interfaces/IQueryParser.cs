@@ -8,5 +8,6 @@ namespace FileManagerOnline.Core.Interfaces
 {
     public interface IQueryParser
     {
+        Query ParseQuery(string queryString);
     }
 }
