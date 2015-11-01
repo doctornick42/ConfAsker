@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\IQueryParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandRunner.cs" />
+    <Compile Include="QueryProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

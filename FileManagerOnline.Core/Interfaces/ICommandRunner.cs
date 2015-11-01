@@ -8,7 +8,7 @@ namespace FileManagerOnline.Core.Interfaces
 {
     public interface ICommandRunner
     {
-        bool IsMatchKeyValue(string path, string key, string expectedValue);
-        bool IsMatchConnectionString(string path, string key, string expectedValue);
+        bool IsMatchKeyValue(List<string> paths, string key, string expectedValue);
+        bool IsMatchConnectionString(List<string> paths, string key, string expectedValue);
     }
 }

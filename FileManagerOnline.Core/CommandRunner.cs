@@ -11,25 +11,40 @@ namespace FileManagerOnline.Core
     {
         public bool IsMatchKeyValue(string path, string key, string expectedValue)
         {
-            return IsMatch(path, key, expectedValue, x => x.GetAppSetting(key));
+            List<string> paths = new List<string>() { path };
+            return IsMatchKeyValue(path, key, expectedValue);
         }
 
         public bool IsMatchConnectionString(string path, string key, string expectedValue)
         {
-            return IsMatch(path, key, expectedValue, x => x.GetConnectionsString(key));
+            List<string> paths = new List<string>() { path };
+            return IsMatchConnectionString(path, key, expectedValue);
         }
 
-        private bool IsMatch(string path, string key, string expectedValue,
+        public bool IsMatchKeyValue(List<string> paths, string key, string expectedValue)
+        {
+            return IsMatch(paths, key, expectedValue, x => x.GetAppSetting(key));
+        }
+
+        public bool IsMatchConnectionString(List<string> paths, string key, string expectedValue)
+        {
+            return IsMatch(paths, key, expectedValue, x => x.GetConnectionsString(key));
+        }
+
+        private bool IsMatch(List<string> paths, string key, string expectedValue,
             Func<ConfigReader, string> chosenFunction)
         {
-            bool result = false;
+            bool result = true;
 
-            ConfigReader configReader = new ConfigReader(path);
-            string foundValue = chosenFunction(configReader);
-
-            if (!String.IsNullOrEmpty(foundValue) && foundValue == expectedValue)
+            foreach (string path in paths)
             {
-                result = true;
+                ConfigReader configReader = new ConfigReader(path);
+                string foundValue = chosenFunction(configReader);
+
+                if (String.IsNullOrEmpty(foundValue) || foundValue != expectedValue)
+                {
+                    result &= false;
+                }
             }
 
             return result;

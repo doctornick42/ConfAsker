@@ -10,11 +10,15 @@ namespace FileManagerOnline.Core
     {
         public ECommand Command { get; set; }
 
+        public List<string> Paths { get; set; }
+
         public string KeyValue { get; set; }
 
         public string ConnectionString { get; set; }
 
         public string Section { get; set; }
+
+        public string Expected { get; set; }
     }
 
     public enum ECommand

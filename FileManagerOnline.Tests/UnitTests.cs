@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System.Text;
 
 namespace FileManagerOnline.Tests
 {
@@ -12,6 +13,8 @@ namespace FileManagerOnline.Tests
     public class UnitTests
     {
         private const string _tempDirPath = "tempForTest";
+
+        private const string _mainTestConfigFilename = @"\mainTestConfig.config";
         private readonly List<string> _tempFiles = new List<string>() 
         {
             @"\testFile1.txt",
@@ -65,17 +68,45 @@ namespace FileManagerOnline.Tests
             File.Create(tempDir.FullName + @"\testFile2.jpg");
             File.Create(tempDir.FullName + @"\testFile3.config");
             File.Create(subFolder.FullName + @"\subfolderFile.txt");
+
+            CreateTestConfigFile(tempDir.FullName, _mainTestConfigFilename);
+        }
+
+        private void CreateTestConfigFile(string path, string filename)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+            sb.AppendLine("<configuration>");
+
+            sb.AppendLine("<configSections>");
+            sb.AppendLine("</configSections>");
+            
+            sb.AppendLine("<connectionStrings>");
+            sb.AppendLine("<add name=\"firstConnectionString\" connectionString=\"server=123.456.789.1,1234;initial catalog=test_db;user id=test_user;password=123456;multipleactiveresultsets=true;App=EntityFramework\" />");
+            sb.AppendLine("<add name=\"secondConnectionString\" connectionString=\"server=123.456.789.1,1234;initial catalog=test_db_2;user id=test_user;password=123456;multipleactiveresultsets=true;App=EntityFramework\" />");
+            sb.AppendLine("</connectionStrings>");
+
+            sb.AppendLine("<appSettings>");
+            sb.AppendLine("<add key=\"firstKey\" value=\"firstValue\" />");
+            sb.AppendLine("<add key=\"secondKey\" value=\"secondValue\" />");
+            sb.AppendLine("<add key=\"thirdKey\" value=\"thirdValue\" />");
+            sb.AppendLine("</appSettings>");
+
+            sb.AppendLine("</configuration>");
+
+            File.WriteAllText(String.Concat(path, filename), sb.ToString());
         }
 
         [Test]
         public void TestConfigReader()
         {
-            var testWebConfigPath1 = @"D:\projects\auditorius.tradingdesk\auditorius.tradingdesk\src\Auditorius.Tradingdesk.WebUI\Web.config";
-            var configReader = new ConfigReader(testWebConfigPath1);
+            DirectoryInfo tempDir = CreateOrClearTempFolder();
+            FillTempFolder();
 
-            var geoValue = configReader.GetAppSetting("GeoConnectionString");
+            var configReader = new ConfigReader(tempDir + _mainTestConfigFilename);
 
-            Assert.AreEqual("Geo", geoValue);
+            var secondValue = configReader.GetAppSetting("secondKey");
+            Assert.AreEqual("secondValue", secondValue);
         }
 
         [Test]
