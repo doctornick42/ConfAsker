@@ -8,6 +8,8 @@ namespace ConfAsker.Core.Interfaces
 {
     public interface IQueryParser
     {
-        Query ParseQuery(string queryString);
+        ConfAsker.Core.Query.Query ParseQuery(string queryString);
+
+        ConfAsker.Core.Query.Query ParseQuery(string[] queryStringArray);
     }
 }

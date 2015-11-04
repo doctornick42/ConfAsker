@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 
-namespace ConfAsker.Core
+namespace ConfAsker.Core.FileSystem
 {
     public class ConfigReader
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConfAsker.Core
+namespace ConfAsker.Core.FileSystem
 {
     public class DirectoryInfoProcessor
     {

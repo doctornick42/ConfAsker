@@ -57,15 +57,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IQueryValidator.cs" />
-    <Compile Include="Query.cs" />
-    <Compile Include="ConfigReader.cs" />
-    <Compile Include="DirectoryInfoProcessor.cs" />
+    <Compile Include="Query\Query.cs" />
+    <Compile Include="FileSystem\ConfigReader.cs" />
+    <Compile Include="FileSystem\DirectoryInfoProcessor.cs" />
     <Compile Include="Interfaces\ICommandRunner.cs" />
     <Compile Include="Interfaces\IQueryParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandRunner.cs" />
-    <Compile Include="QueryParser.cs" />
-    <Compile Include="QueryProcessor.cs" />
+    <Compile Include="Query\QueryParser.cs" />
+    <Compile Include="Query\QueryProcessor.cs" />
+    <Compile Include="Query\QueryValidator.cs" />
+    <Compile Include="Units\OperationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -73,6 +75,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

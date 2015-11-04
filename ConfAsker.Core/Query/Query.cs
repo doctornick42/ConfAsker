@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConfAsker.Core
+namespace ConfAsker.Core.Query
 {
     public class Query
     {

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using ConfAsker.Core.FileSystem;
+using ConfAsker.Core.Query;
 
 namespace ConfAsker.Tests
 {

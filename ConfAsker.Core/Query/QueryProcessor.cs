@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConfAsker.Core;
 
-namespace ConfAsker.Core
+namespace ConfAsker.Core.Query
 {
     public class QueryProcessor
     {
