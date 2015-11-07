@@ -16,6 +16,8 @@ namespace ConfAsker.Tests
     {
         private const string _tempDirPath = "tempForTest";
 
+        private DirectoryInfo _tempDir;
+
         private const string _mainTestConfigFilename = @"\mainTestConfig.config";
         private readonly List<string> _tempFiles = new List<string>() 
         {
@@ -66,12 +68,22 @@ namespace ConfAsker.Tests
             }
 
             var subFolder = tempDir.CreateSubdirectory("testSubfolder");
-            File.Create(tempDir.FullName + @"\testFile1.txt");
-            File.Create(tempDir.FullName + @"\testFile2.jpg");
-            File.Create(tempDir.FullName + @"\testFile3.config");
-            File.Create(subFolder.FullName + @"\subfolderFile.txt");
+            var testFile1 = File.Create(tempDir.FullName + @"\testFile1.txt");
+            var testFile2 = File.Create(tempDir.FullName + @"\testFile2.jpg");
+            var testFile3 = File.Create(tempDir.FullName + @"\testFile3.config");
+            var subFolderFile = File.Create(subFolder.FullName + @"\subfolderFile.txt");
 
-            CreateTestConfigFile(tempDir.FullName, _mainTestConfigFilename);
+            try
+            {
+                CreateTestConfigFile(tempDir.FullName, _mainTestConfigFilename);
+            }
+            finally
+            {
+                testFile1.Close();
+                testFile2.Close();
+                testFile3.Close();
+                subFolderFile.Close();
+            }
         }
 
         private void CreateTestConfigFile(string path, string filename)
@@ -82,7 +94,7 @@ namespace ConfAsker.Tests
 
             sb.AppendLine("<configSections>");
             sb.AppendLine("</configSections>");
-            
+
             sb.AppendLine("<connectionStrings>");
             sb.AppendLine("<add name=\"firstConnectionString\" connectionString=\"server=123.456.789.1,1234;initial catalog=test_db;user id=test_user;password=123456;multipleactiveresultsets=true;App=EntityFramework\" />");
             sb.AppendLine("<add name=\"secondConnectionString\" connectionString=\"server=123.456.789.1,1234;initial catalog=test_db_2;user id=test_user;password=123456;multipleactiveresultsets=true;App=EntityFramework\" />");
@@ -99,13 +111,17 @@ namespace ConfAsker.Tests
             File.WriteAllText(String.Concat(path, filename), sb.ToString());
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            _tempDir = CreateOrClearTempFolder();
+            FillTempFolder();
+        }
+
         [Test]
         public void TestConfigReader()
         {
-            DirectoryInfo tempDir = CreateOrClearTempFolder();
-            FillTempFolder();
-
-            var configReader = new ConfigReader(tempDir + _mainTestConfigFilename);
+            var configReader = new ConfigReader(_tempDir + _mainTestConfigFilename);
 
             var secondValue = configReader.GetAppSetting("secondKey");
             Assert.AreEqual("secondValue", secondValue);
@@ -114,24 +130,21 @@ namespace ConfAsker.Tests
         [Test]
         public void TestGetDirectoriesAndFilesList()
         {
-            DirectoryInfo tempDir = CreateOrClearTempFolder();
-            FillTempFolder();
-
             DirectoryInfoProcessor dirInfoProcessor = new DirectoryInfoProcessor();
-            var directories = dirInfoProcessor.GetDirectories(tempDir.FullName);
-            var files = dirInfoProcessor.GetFiles(tempDir.FullName);
+            var directories = dirInfoProcessor.GetDirectories(_tempDir.FullName);
+            var files = dirInfoProcessor.GetFiles(_tempDir.FullName);
 
-            var expectedOrderedDirectories = tempDir.GetDirectories()
+            var expectedOrderedDirectories = _tempDir.GetDirectories()
                 .Select(x => x.Name)
                 .OrderBy(x => x);
 
-            var expectedOrderedFiles = tempDir.GetFiles()
+            var expectedOrderedFiles = _tempDir.GetFiles()
                 .Select(x => x.Name)
                 .OrderBy(x => x);
 
-            Assert.AreEqual(expectedOrderedDirectories, 
+            Assert.AreEqual(expectedOrderedDirectories,
                 directories.ToList().OrderBy(x => x));
-            Assert.AreEqual(expectedOrderedFiles, 
+            Assert.AreEqual(expectedOrderedFiles,
                 files.ToList().OrderBy(x => x));
 
         }
