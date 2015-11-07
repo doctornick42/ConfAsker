@@ -16,9 +16,12 @@ namespace ConfAsker.Core.Query
 
         public string ConnectionString { get; set; }
 
-        public string Section { get; set; }
-
         public string Expected { get; set; }
+
+        public Query()
+        {
+            Paths = new List<string>();
+        }
     }
 
     public enum ECommand

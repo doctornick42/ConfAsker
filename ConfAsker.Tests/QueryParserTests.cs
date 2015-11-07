@@ -1,6 +1,8 @@
-﻿using ConfAsker.Core.Query;
+﻿using ConfAsker.Core.Interfaces;
+using ConfAsker.Core.Query;
 using ConfAsker.Core.Units;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,61 +12,45 @@ using System.Threading.Tasks;
 namespace ConfAsker.Tests
 {
     [TestFixture]
-    public class QueryValidatorTests
+    public class QueryParserTests
     {
-        private readonly List<string> _invalidQueries = new List<string>() 
+        [Test]
+        public void TestValidationCalling()
         {
-            "ch4eck keyValue:'TestKey' expected:'TestValue'",
-            "check keyValue:TestKey expected:'TestValue'",
-            "check myStrangeKey:'123456' keyValue:'TestKey'",
-            "check keyValue:TestKey"
-        };
+            IQueryValidator queryValidator = MockRepository.GenerateStub<IQueryValidator>();
+            string query = "check keyValue:'myKey' expected:'myValue'";
 
-        private readonly List<string> _validQueries = new List<string>() 
-        {
-            "check keyValue:'TestKey' expected:'TestValue'",
-            "check connectionString:'TestCS' expected:'myConnectionString'",
-            "get keyValue:'TestKey'"
-        };
+            queryValidator.Stub(x => x.ValidateQuerySyntax(Arg<string[]>.Is.Anything))
+                .Return(new OperationResult(successful: true));
+            queryValidator.Stub(x => x.ValidateQuerySyntax(Arg<string>.Is.Anything))
+                .Return(new OperationResult(successful: true));
+
+            QueryParser parser = new QueryParser(queryValidator);
+            parser.ParseQuery(query);
+
+            queryValidator.AssertWasCalled(x => x.ValidateQuerySyntax(query));
+        }
 
         [Test]
-        public void TestQuerySyntaxValidator()
+        public void TestQueryParsing()
         {
-            QueryValidator queryValidator = new QueryValidator();
+            IQueryValidator queryValidator = MockRepository.GenerateStub<IQueryValidator>();
+            string testQueryString = 
+                @"check keyValue:'someKey' paths:'\web.config' expected:'someValue'";
 
-            OperationResult validQueriesValidationResult = new OperationResult();
-            foreach (var query in _validQueries)
-            {
-                OperationResult valResult = queryValidator.ValidateQuerySyntax(query);
+            queryValidator.Stub(x => x.ValidateQuerySyntax(Arg<string[]>.Is.Anything))
+                .Return(new OperationResult(successful: true));
+            queryValidator.Stub(x => x.ValidateQuerySyntax(Arg<string>.Is.Anything))
+                .Return(new OperationResult(successful: true));
 
-                validQueriesValidationResult.Successful &= valResult.Successful;
-                if (!valResult.Successful)
-                {
-                    validQueriesValidationResult.Description +=
-                        String.Format("Error in query '{0}': {1}. ",
-                            query, valResult.Description);
-                }
-            }
 
-            Assert.IsTrue(validQueriesValidationResult.Successful,
-                validQueriesValidationResult.Description);
+            QueryParser parser = new QueryParser(queryValidator);
+            Query query = parser.ParseQuery(testQueryString);
 
-            OperationResult invalidQueriesValidationResult = new OperationResult();
-            foreach (var query in _invalidQueries)
-            {
-                OperationResult valResult = queryValidator.ValidateQuerySyntax(query);
-
-                invalidQueriesValidationResult.Successful &= valResult.Successful;
-                if (!valResult.Successful)
-                {
-                    invalidQueriesValidationResult.Description +=
-                        String.Format("Error in query '{0}': {1} .",
-                            query, valResult.Description);
-                }
-            }
-
-            Assert.IsFalse(invalidQueriesValidationResult.Successful,
-                invalidQueriesValidationResult.Description);
+            Assert.AreEqual(ECommand.check, query.Command);
+            Assert.AreEqual(new List<string>() { @"\web.config" }, query.Paths);
+            Assert.AreEqual("someKey", query.KeyValue);
+            Assert.AreEqual("someValue", query.Expected);
         }
     }
 }

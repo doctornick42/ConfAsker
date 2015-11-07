@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConfAsker.Core.Units;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace ConfAsker.Core.Interfaces
 {
     public interface IQueryValidator
     {
+        OperationResult ValidateQuerySyntax(string query);
+
+        OperationResult ValidateQuerySyntax(string[] query);
     }
 }

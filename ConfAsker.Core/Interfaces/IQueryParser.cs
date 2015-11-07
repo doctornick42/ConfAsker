@@ -10,6 +10,12 @@ namespace ConfAsker.Core.Interfaces
     {
         ConfAsker.Core.Query.Query ParseQuery(string queryString);
 
+        /// <summary>
+        /// Convert query string to an instance of a Query class.
+        /// </summary>
+        /// <param name="queryStringArray">
+        /// Query string that presented by arguments array from ConsoleApplication
+        /// </param>
         ConfAsker.Core.Query.Query ParseQuery(string[] queryStringArray);
     }
 }

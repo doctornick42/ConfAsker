@@ -15,7 +15,8 @@ namespace ConfAsker.Core.Query
             "keyValue",
             "connectionString",
             "expected",
-            "caseInsensitive"
+            "caseInsensitive",
+            "paths"
         };
 
         private const string _argumentFormat = @"^'.*'$";
@@ -62,11 +63,6 @@ namespace ConfAsker.Core.Query
 
             
             return result;
-        }
-
-        public OperationResult ValidateQuery(Query query)
-        {
-            throw new NotImplementedException();
         }
 
         private OperationResult ValidateArguments(ECommand command, string[] arguments)
