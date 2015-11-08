@@ -1,5 +1,6 @@
 ﻿using ConfAsker.Core.FileSystem;
 using ConfAsker.Core.Interfaces;
+using ConfAsker.Core.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,32 +11,35 @@ namespace ConfAsker.Core
 {
     public class CommandRunner : ICommandRunner
     {
-        public bool IsMatchKeyValue(string path, string key, string expectedValue)
+        public OperationResult IsMatchKeyValue(string path, string key, string expectedValue)
         {
             List<string> paths = new List<string>() { path };
             return IsMatchKeyValue(path, key, expectedValue);
         }
 
-        public bool IsMatchConnectionString(string path, string key, string expectedValue)
+        public OperationResult IsMatchConnectionString(string path, string key, 
+            string expectedValue)
         {
             List<string> paths = new List<string>() { path };
             return IsMatchConnectionString(path, key, expectedValue);
         }
 
-        public bool IsMatchKeyValue(List<string> paths, string key, string expectedValue)
+        public OperationResult IsMatchKeyValue(List<string> paths, string key, 
+            string expectedValue)
         {
             return IsMatch(paths, key, expectedValue, x => x.GetAppSetting(key));
         }
 
-        public bool IsMatchConnectionString(List<string> paths, string key, string expectedValue)
+        public OperationResult IsMatchConnectionString(List<string> paths, 
+            string key, string expectedValue)
         {
             return IsMatch(paths, key, expectedValue, x => x.GetConnectionsString(key));
         }
 
-        private bool IsMatch(List<string> paths, string key, string expectedValue,
+        private OperationResult IsMatch(List<string> paths, string key, string expectedValue,
             Func<ConfigReader, string> chosenFunction)
         {
-            bool result = true;
+            OperationResult result = new OperationResult();
 
             foreach (string path in paths)
             {
@@ -44,7 +48,8 @@ namespace ConfAsker.Core
 
                 if (String.IsNullOrEmpty(foundValue) || foundValue != expectedValue)
                 {
-                    result &= false;
+                    result.Successful &= false;
+                    result.Description += String.Format("Mismatch in file '{0}'. ", path); 
                 }
             }
 

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfAsker.Web", "ConfAsker.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfAsker.Tests", "ConfAsker.Tests\ConfAsker.Tests.csproj", "{C99F10FB-F74A-4A93-93AE-1CC9A058AE0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfAsker.ConsoleApp", "ConfAsker.ConsoleApp\ConfAsker.ConsoleApp.csproj", "{84F8BEDA-0B64-4D45-AFDB-D0E0164831BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C99F10FB-F74A-4A93-93AE-1CC9A058AE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C99F10FB-F74A-4A93-93AE-1CC9A058AE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C99F10FB-F74A-4A93-93AE-1CC9A058AE0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84F8BEDA-0B64-4D45-AFDB-D0E0164831BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F8BEDA-0B64-4D45-AFDB-D0E0164831BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F8BEDA-0B64-4D45-AFDB-D0E0164831BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F8BEDA-0B64-4D45-AFDB-D0E0164831BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

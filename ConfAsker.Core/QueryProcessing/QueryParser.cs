@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConfAsker.Core.Query
+namespace ConfAsker.Core.QueryProcessing
 {
     public class QueryParser : IQueryParser
     {
@@ -48,8 +48,10 @@ namespace ConfAsker.Core.Query
             string[] arguments = new string[queryStringArray.Length - 1];
             Array.Copy(queryStringArray, 1, arguments, 0, queryStringArray.Length - 1);
 
+            string[] argumentKeyValuDelimiter = new string[1] { ":'" };
+
             Dictionary<string, string> argumentsDict = (from arg in arguments
-                                                        let splittedArg = arg.Split(':')
+                                                        let splittedArg = arg.Split(new char[] { ':' }, 2)
                                                         select splittedArg)
                                  .ToDictionary(x => x[0], x => x[1]);
 

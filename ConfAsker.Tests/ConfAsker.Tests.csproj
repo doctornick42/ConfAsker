@@ -57,6 +57,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Helpers\FileSystemTestsHelper.cs" />
     <Compile Include="QueryParserTests.cs" />
     <Compile Include="QueryValidatorTests.cs" />
     <Compile Include="UnitTests.cs" />

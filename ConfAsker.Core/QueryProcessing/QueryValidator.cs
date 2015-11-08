@@ -1,4 +1,5 @@
-﻿using ConfAsker.Core.Units;
+﻿using ConfAsker.Core.Interfaces;
+using ConfAsker.Core.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ConfAsker.Core.Query
+namespace ConfAsker.Core.QueryProcessing
 {
-    public class QueryValidator
+    public class QueryValidator : IQueryValidator
     {
         private readonly List<string> _availableArgumentsKeys = new List<string>() 
         {
@@ -72,7 +73,7 @@ namespace ConfAsker.Core.Query
             try
             {
                 argumentsDict = (from arg in arguments
-                                 let splittedArg = arg.Split(':')
+                                 let splittedArg = arg.Split(new char[] { ':' }, 2)
                                  select splittedArg)
                                  .ToDictionary(x => x[0], x => x[1]);
             }

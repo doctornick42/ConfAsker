@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConfAsker.Core.QueryProcessing;
 
 namespace ConfAsker.Core.Interfaces
 {
     public interface IQueryParser
     {
-        ConfAsker.Core.Query.Query ParseQuery(string queryString);
+        Query ParseQuery(string queryString);
 
         /// <summary>
         /// Convert query string to an instance of a Query class.
@@ -16,6 +17,6 @@ namespace ConfAsker.Core.Interfaces
         /// <param name="queryStringArray">
         /// Query string that presented by arguments array from ConsoleApplication
         /// </param>
-        ConfAsker.Core.Query.Query ParseQuery(string[] queryStringArray);
+        Query ParseQuery(string[] queryStringArray);
     }
 }

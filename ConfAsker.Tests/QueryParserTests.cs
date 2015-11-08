@@ -1,5 +1,5 @@
 ﻿using ConfAsker.Core.Interfaces;
-using ConfAsker.Core.Query;
+using ConfAsker.Core.QueryProcessing;
 using ConfAsker.Core.Units;
 using NUnit.Framework;
 using Rhino.Mocks;

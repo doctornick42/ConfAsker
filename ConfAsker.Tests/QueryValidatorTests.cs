@@ -1,4 +1,4 @@
-﻿using ConfAsker.Core.Query;
+﻿using ConfAsker.Core.QueryProcessing;
 using ConfAsker.Core.Units;
 using NUnit.Framework;
 using System;
@@ -23,6 +23,7 @@ namespace ConfAsker.Tests
         private readonly List<string> _validQueries = new List<string>() 
         {
             "check keyValue:'TestKey' expected:'TestValue'",
+            @"check keyValue:'TestKey' expected:'TestValue' paths:'D:\something\web.config'",
             "check connectionString:'TestCS' expected:'myConnectionString'",
             "get keyValue:'TestKey'",
             @"check paths:'\qwerty\something.config' keyValue:'TestKey' expected:'TestValue'"
