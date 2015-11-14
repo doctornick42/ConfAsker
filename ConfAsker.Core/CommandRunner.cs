@@ -41,6 +41,11 @@ namespace ConfAsker.Core
         {
             OperationResult result = new OperationResult();
 
+            if (!paths.Any())
+            {
+                paths = new List<string>() { "" };
+            }
+
             foreach (string path in paths)
             {
                 ConfigReader configReader = new ConfigReader(path);
@@ -49,7 +54,9 @@ namespace ConfAsker.Core
                 if (String.IsNullOrEmpty(foundValue) || foundValue != expectedValue)
                 {
                     result.Successful &= false;
-                    result.Description += String.Format("Mismatch in file '{0}'. ", path); 
+                    result.Description += String.Format("Mismatch in file '{0}' on '{1}'. ", 
+                        path,
+                        key); 
                 }
             }
 

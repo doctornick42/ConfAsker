@@ -1,9 +1,11 @@
 ﻿using ConfAsker.Core;
+using ConfAsker.Core.FileSystem;
 using ConfAsker.Core.Interfaces;
 using ConfAsker.Core.Units;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +15,13 @@ namespace ConfAsker.Core.QueryProcessing
     public class QueryParser : IQueryParser
     {
         private IQueryValidator _queryValidator;
+        private IDirectoryInfoProcessor _directoryInfoProcessor;
 
-        public QueryParser(IQueryValidator queryValidator)
+        public QueryParser(IQueryValidator queryValidator,
+            IDirectoryInfoProcessor directoryInfoProcessor)
         {
             _queryValidator = queryValidator;
+            _directoryInfoProcessor = directoryInfoProcessor;
         }
 
         public Query ParseQuery(string queryString)
@@ -48,7 +53,7 @@ namespace ConfAsker.Core.QueryProcessing
             string[] arguments = new string[queryStringArray.Length - 1];
             Array.Copy(queryStringArray, 1, arguments, 0, queryStringArray.Length - 1);
 
-            string[] argumentKeyValuDelimiter = new string[1] { ":'" };
+            string[] argumentKeyValuDelimiter = new string[1] { ":\"" };
 
             Dictionary<string, string> argumentsDict = (from arg in arguments
                                                         let splittedArg = arg.Split(new char[] { ':' }, 2)
@@ -62,9 +67,11 @@ namespace ConfAsker.Core.QueryProcessing
             query.KeyValue = GetArgumentFromDictionary(argumentsDict, "keyValue");
 
             string unparsedPathsString = GetArgumentFromDictionary(argumentsDict, "paths");
-            query.Paths = String.IsNullOrWhiteSpace(unparsedPathsString) 
-                ? new List<string>()
+            List<string> originalPaths = String.IsNullOrWhiteSpace(unparsedPathsString)
+                ? new List<string>() { Directory.GetCurrentDirectory() }
                 : unparsedPathsString.Split(',').ToList();
+
+            query.Paths = _directoryInfoProcessor.GetQueryPathes(originalPaths);
 
             return query;
         }

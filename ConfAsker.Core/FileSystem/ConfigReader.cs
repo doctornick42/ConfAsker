@@ -15,27 +15,40 @@ namespace ConfAsker.Core.FileSystem
         {
             ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
             fileMap.ExeConfigFilename = configPath;
-            _configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
-                System.Configuration.ConfigurationUserLevel.None);
+            try
+            {
+                _configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
+                    System.Configuration.ConfigurationUserLevel.None);
+            }
+            catch (ConfigurationErrorsException)
+            {
+                _configuration = null;
+            }
         }
 
         public string GetConnectionsString(string connectionStringName)
         {
-            var connection = _configuration.ConnectionStrings.ConnectionStrings[connectionStringName];
-            if (connection != null)
+            if (_configuration != null)
             {
-                return connection.ConnectionString;
+                var connection = _configuration.ConnectionStrings.ConnectionStrings[connectionStringName];
+                if (connection != null)
+                {
+                    return connection.ConnectionString;
+                }
             }
-            
+
             return null;
         }
 
         public string GetAppSetting(string key)
         {
-            var keyValue = _configuration.AppSettings.Settings[key];
-            if (keyValue != null)
+            if (_configuration != null)
             {
-                return keyValue.Value;
+                var keyValue = _configuration.AppSettings.Settings[key];
+                if (keyValue != null)
+                {
+                    return keyValue.Value;
+                }
             }
             return null;
         }

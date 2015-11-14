@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IDirectoryInfoProcessor.cs" />
     <Compile Include="Interfaces\IQueryValidator.cs" />
     <Compile Include="QueryProcessing\Query.cs" />
     <Compile Include="FileSystem\ConfigReader.cs" />

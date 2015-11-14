@@ -59,5 +59,22 @@ namespace ConfAsker.Tests
 
         }
 
+        [Test]
+        public void TestGetQueryPathes()
+        {
+            DirectoryInfoProcessor dirInfoProcessor =
+                new DirectoryInfoProcessor();
+
+            List<string> confFiles = dirInfoProcessor
+                .GetQueryPathes(new List<string>() { _tempDir.FullName });
+
+            var expected = _tempDir.GetFiles()
+                .Where(x => x.Extension == ".config")
+                .Select(x => x.FullName)
+                .ToList();
+
+            Assert.AreEqual(expected, confFiles);
+        }
+
     }
 }

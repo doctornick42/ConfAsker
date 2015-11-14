@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using ConfAsker.Core;
+using ConfAsker.Core.FileSystem;
 using ConfAsker.Core.Interfaces;
 using ConfAsker.Core.QueryProcessing;
 using ConfAsker.Core.Units;
@@ -20,6 +21,7 @@ namespace ConfAsker.ConsoleApp
             builder.RegisterType<CommandRunner>().As<ICommandRunner>();
             builder.RegisterType<QueryParser>().As<IQueryParser>();
             builder.RegisterType<QueryValidator>().As<IQueryValidator>();
+            builder.RegisterType<DirectoryInfoProcessor>().As<IDirectoryInfoProcessor>();
 
             LogFactory logFactory = new LogFactory();
             Logger logger = logFactory.GetCurrentClassLogger();
@@ -46,8 +48,9 @@ namespace ConfAsker.ConsoleApp
 
                     logger.Info(logString);
                 }
-
+#if DEBUG
                 Console.ReadLine();
+#endif
             }
         }
     }

@@ -24,6 +24,7 @@ namespace ConfAsker.Core.QueryProcessing
         {
             OperationResult result = new OperationResult(false);
             Query query = _queryParser.ParseQuery(queryString);
+
             switch (query.Command)
             {
                 case ECommand.check:
