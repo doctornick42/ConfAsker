@@ -36,7 +36,7 @@ namespace ConfAsker.Tests
             IDirectoryInfoProcessor directoryInfoProcessor =
                 MockRepository.GenerateStub<IDirectoryInfoProcessor>();
 
-            string query = "check keyValue:'myKey' expected:'myValue'";
+            string query = "check keyValue:\"myKey\" expected:\"myValue\"";
 
             queryValidator.Stub(x => x.ValidateQuerySyntax(Arg<string[]>.Is.Anything))
                 .Return(new OperationResult(successful: true));
@@ -60,7 +60,7 @@ namespace ConfAsker.Tests
                 MockRepository.GenerateStub<IDirectoryInfoProcessor>();
 
             string testQueryString = 
-                @"check keyValue:'someKey' paths:'web.config' expected:'someValue'";
+                "check keyValue:\"someKey\" paths:\"web.config\" expected:\"someValue\"";
 
             queryValidator.Stub(x => x.ValidateQuerySyntax(Arg<string[]>.Is.Anything))
                 .Return(new OperationResult(successful: true));

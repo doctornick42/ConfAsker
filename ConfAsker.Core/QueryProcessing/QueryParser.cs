@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ConfAsker.Core.QueryProcessing
@@ -34,7 +35,10 @@ namespace ConfAsker.Core.QueryProcessing
                 throw new ValidationException(validationResult.Description);
             }
 
-            string[] splitedString = queryString.Split(' ');
+            string[] splitedString = Regex.Matches(queryString, @"[\""].+?[\""]|[^ ]+")
+                .Cast<Match>()
+                .Select(m => m.Value)
+                .ToArray();
             return ParseQuery(splitedString);
         }
 
@@ -79,7 +83,7 @@ namespace ConfAsker.Core.QueryProcessing
         private string GetArgumentFromDictionary(Dictionary<string, string> dict, string searchingKey)
         {
             return dict.ContainsKey(searchingKey)
-                ? dict[searchingKey].Trim('\'')
+                ? dict[searchingKey].Trim('\\').Trim('"')
                 : null;
         }
     }

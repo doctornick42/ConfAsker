@@ -41,15 +41,23 @@ namespace ConfAsker.Core.QueryProcessing
         public OperationResult RunQuery(string[] queryStringArray)
         {
             OperationResult result = new OperationResult(false);
-            Query query = _queryParser.ParseQuery(queryStringArray);
-            switch (query.Command)
+            try
             {
-                case ECommand.check:
-                    result = RunCheckQuery(query);
-                    break;
-                case ECommand.get:
-                    result = RunGetQuery(query);
-                    break;
+                Query query = _queryParser.ParseQuery(queryStringArray);
+                switch (query.Command)
+                {
+                    case ECommand.check:
+                        result = RunCheckQuery(query);
+                        break;
+                    case ECommand.get:
+                        result = RunGetQuery(query);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Description = ex.Message;
+                result.Successful = false;
             }
 
             return result;

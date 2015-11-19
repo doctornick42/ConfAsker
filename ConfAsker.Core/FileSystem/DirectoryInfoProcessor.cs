@@ -19,16 +19,7 @@ namespace ConfAsker.Core.FileSystem
 
             foreach (var incommingStr in incommingStrings)
             {
-                FileAttributes fAttr;
-                try
-                {
-                    fAttr = File.GetAttributes(incommingStr);
-                }
-                catch (FileNotFoundException)
-                {
-                    //just skip not found files
-                    continue;
-                }
+                FileAttributes fAttr = File.GetAttributes(incommingStr);
 
                 if (fAttr.HasFlag(FileAttributes.Directory))
                 {

@@ -15,10 +15,13 @@ namespace ConfAsker.Core.FileSystem
         {
             ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
             fileMap.ExeConfigFilename = configPath;
+
             try
             {
-                _configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
-                    System.Configuration.ConfigurationUserLevel.None);
+                _configuration = String.IsNullOrWhiteSpace(configPath)
+                    ? null
+                    : ConfigurationManager.OpenMappedExeConfiguration(fileMap,
+                        System.Configuration.ConfigurationUserLevel.None);
             }
             catch (ConfigurationErrorsException)
             {

@@ -20,8 +20,6 @@ namespace ConfAsker.Core.QueryProcessing
             "paths"
         };
 
-        private const string _argumentFormat = @"^'.*'$";
-
         public OperationResult ValidateQuerySyntax(string query)
         {
             string[] stringArray = query.Split(' ');
@@ -92,22 +90,6 @@ namespace ConfAsker.Core.QueryProcessing
             {
                 result.Description = String.Format("Unknown arguments: {0}", 
                     String.Join(", ", unknownArguments));
-                result.Successful = false;
-                return result;
-            }
-
-            Regex singleQuotesRegex = new Regex(_argumentFormat);
-
-            //caseInsensitive argument is the only argument that
-            //could exists without single quotes around it
-            var notSingleQuotedArgs = argumentsDict
-                .Values
-                .Where(x => x != "caseInsensitive" && !singleQuotesRegex.IsMatch(x));
-
-            if (notSingleQuotedArgs.Any(x => x != "caseInsensitive"))
-            {
-                result.Description = String.Format("Arguments {0} must be inside single quotes",
-                    String.Join(", ", notSingleQuotedArgs));
                 result.Successful = false;
                 return result;
             }
