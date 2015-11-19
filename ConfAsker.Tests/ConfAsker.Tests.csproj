@@ -72,10 +72,6 @@
       <Project>{465b6eb7-3ab4-4e1a-a42c-d659b2bd1619}</Project>
       <Name>ConfAsker.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ConfAsker.Web\ConfAsker.Web.csproj">
-      <Project>{bddad1a2-62ca-46ae-a625-31757027893d}</Project>
-      <Name>ConfAsker.Web</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
